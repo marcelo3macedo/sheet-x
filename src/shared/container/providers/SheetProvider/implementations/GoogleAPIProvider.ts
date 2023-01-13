@@ -7,18 +7,35 @@ const fs = require('fs').promises;
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 const TOKEN_PATH = path.join(process.cwd(), 'credentials/token.json');
 const CREDENTIALS_PATH = path.join(process.cwd(), 'credentials/credentials.json');
+const valueInputOption = 'USER_ENTERED'
 
 class GoogleAPIProvider implements ISheetProvider {
     async read({ spreadsheetId, range }): Promise<any> {
         const auth = await this.authorize()
 
-        const sheets = google.sheets({version: 'v4', auth});
+        const sheets = google.sheets({version: 'v4', auth})
         const res = await sheets.spreadsheets.values.get({
             spreadsheetId,
             range,
-        });
+        })
         
         return res.data.values
+    }
+
+    async post({ spreadsheetId, data }): Promise<void> {
+        const auth = await this.authorize()
+
+        const sheets = google.sheets({version: 'v4', auth})
+        const resource = {
+            spreadsheetId,
+            auth,
+            resource: {
+                valueInputOption,
+                data            
+            }
+        }
+        
+        await sheets.spreadsheets.values.batchUpdate(resource)
     }
 
     async authorize() {
