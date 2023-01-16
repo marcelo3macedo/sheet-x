@@ -4,6 +4,7 @@ import { ISheetProvider } from "../ISheetProvider";
 
 const path = require('path');
 const fs = require('fs').promises;
+const version = 'v4';
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 const TOKEN_PATH = path.join(process.cwd(), 'credentials/token.json');
 const CREDENTIALS_PATH = path.join(process.cwd(), 'credentials/credentials.json');
@@ -15,7 +16,7 @@ class GoogleAPIProvider implements ISheetProvider {
     async read({ spreadsheetId, range }): Promise<any> {
         const auth = await this.authorize()
 
-        const sheets = google.sheets({version: 'v4', auth})
+        const sheets = google.sheets({version, auth})
         const res = await sheets.spreadsheets.values.get({
             spreadsheetId,
             range,
@@ -27,7 +28,7 @@ class GoogleAPIProvider implements ISheetProvider {
     async put({ spreadsheetId, data }): Promise<void> {
         const auth = await this.authorize()
 
-        const sheets = google.sheets({version: 'v4', auth})
+        const sheets = google.sheets({version, auth})
         const resource = {
             spreadsheetId,
             auth,
@@ -43,7 +44,7 @@ class GoogleAPIProvider implements ISheetProvider {
     async post({ spreadsheetId, data }): Promise<void> {
         const auth = await this.authorize()
 
-        const sheets = google.sheets({version: 'v4', auth})
+        const sheets = google.sheets({version, auth})
         const resource = {
             spreadsheetId,
             auth,
