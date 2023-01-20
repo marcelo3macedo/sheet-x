@@ -9,11 +9,11 @@ class SheetFormatter {
         })
     }
 
-    static toCreateRequest(data) {
+    static toCreateRequest(sheet, data) {
         if (!data || !Array.isArray(data) || data.length === 0) return
         
         return {
-            range: `A:${this.colToletters(data[0].length)}`,
+            range: `${sheet}!A:${this.colToletters(data[0].length)}`,
             data
         }        
     }

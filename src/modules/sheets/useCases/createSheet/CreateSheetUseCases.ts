@@ -10,7 +10,7 @@ export default class CreateSheetUseCases {
     ) {}
 
     async execute({ spreadsheetId, sheet, data }): Promise<any> {
-        const body = SheetFormatter.toCreateRequest(data)
+        const body = SheetFormatter.toCreateRequest(sheet, data)
         if (!body) return 
 
         return this.googleAPIProvider.post({ spreadsheetId, data: body })

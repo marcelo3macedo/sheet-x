@@ -1,0 +1,12 @@
+version: '3.1'
+services:
+  sheet-x:
+    container_name: sheet-x
+    build:
+      context: ./
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      - './:/app'
+    ports:
+      - '4500:4500'
